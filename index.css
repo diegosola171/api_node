@@ -1,0 +1,51 @@
+@font-face {
+    font-family: Rubik;
+    src: url("/Rubik-Regular.ttf");
+    }
+
+html,body{
+	/*-webkit-app-region: drag;*/
+    background-color: #3483fa;
+    padding: 0px;
+    margin: 0px;
+    /*-webkit-margin-before: -11px;*/
+  }
+.hora{
+    bottom: 0px;
+    text-align: center;
+    font-size: 12px;
+    font-family: Rubik;
+    color: white;
+    vertical-align: center;
+    -webkit-app-region: no-drag;
+	/*-webkit-app-region: drag;*/
+}
+
+
+.icon{
+    height: 15px;
+    width: 15px;
+}
+
+.dragger{
+    -webkit-app-region: drag;
+}
+
+.button{
+  background: #6e6e6e;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-transition: all 0.3s ease-in-out, visibility 0s;
+  -moz-transition: all 0.3s ease-in-out, visibility 0s;
+  transition: all 0.3s ease-in-out, visibility 0s;
+  font-family: Rubik;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 2px 2px 2px 2px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  width: 50px;
+  margin: 10px;
+  cursor: pointer;
+}
+

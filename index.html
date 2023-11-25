@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html style="height: 29px; background-color: transparent;">
+
+<head>
+    <meta charset="utf-8">
+</head>
+<header>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/hora.js"></script>
+    <script src="js/break.js"></script>
+    <script src="js/break_config.js"></script>
+    <script src="js/feriados.js"></script>
+    <script src="js/calendar.js"></script>
+</header>
+
+<body>
+
+    <div id="principal" style="position: absolute; bottom:0px;">
+        <table class="hora" style="width:100%; height:29px;">
+            <tr>
+                <!--Arrastrar-->
+                <th title="Mover" class="dragger" style="width:6%; border-right: 1px solid #75acff; "><img class="icon"
+                        style="cursor:all-scroll; vertical-align: text-bottom;" src="/img/drag_white.png"></th>
+                <!--hora-->
+                <th title="Abrir calendario / contador de días corridos" class="hora"
+                    style="width:67%;  vertical-align: text-bottom; cursor:zoom-in;" id="fecha_y_hora">
+                    <!--<pre style=" vertical-align: top;"><span id="hora" class="hora" style=" vertical-align: top;"></span> - <span id="fecha" class="hora" style=" vertical-align: top;"></span></pre>-->
+                </th>
+                <!--break-->
+                <th title="Iniciar/pausar Break"
+                    style="bottom: 10px; width:9%; border-left: 1px  solid #75acff; border-right: 1px  solid #75acff;   cursor:pointer;"
+                    id="break_button_barra">B</th>
+                <!--Pausa-->
+                <th title="Iniciar/pausar Pausa"
+                    style=" vertical-align: text-top; width:9%; border-right: 1px  solid #75acff;  cursor:pointer;"
+                    id="pause_button_barra">P</th>
+                <!--Agrandar-->
+                <th title="Mostrar/ocultar información de tiempos" id="open_break"
+                    style=" cursor:zoom-in; vertical-align: text-bottom; width:9%;"><img class="icon icon2"
+                        id="boton_abrir" src="/img/abrir.png"></th>
+            </tr>
+        </table>
+    </div>
+
+    <div id="bloque_break" style="visibility: hidden; background-color: #75acff; height: 221px; position:relative;">
+        <table style="width:100%;">
+            <tr>
+                <td style="width:5%;"><button type="button" class="button" id="break_button"
+                        title="Iniciar/pausar Break">Iniciar</button></td>
+                <th class="hora" style="width:40%;">Break:</th>
+                <td class="hora" style="width:55%;" id="break_time" title="Tiempo restante de Break">30:00</td>
+            </tr>
+            <tr>
+                <td><button type="button" class="button" id="pause_button" title="Iniciar/pausar Pausa">Iniciar</button>
+                </td>
+                <th class="hora">Pausa:</th>
+                <td class="hora" id="pause_time" title="Tiempo restante de Pausa">10:00</td>
+            </tr>
+            <tr>
+                <td></td>
+                <th class="hora"
+                    style="border-left: 1px dashed #cecece; border-top: 1px dashed #cecece; border-bottom: 1px dashed #cecece;">
+                    Total:</th>
+                <td class="hora"
+                    style="border-right: 1px dashed #cecece; border-top: 1px dashed #cecece; border-bottom: 1px dashed #cecece;"
+                    id="tiempo_total" title="Tiempo transcurrido total">00:00</td>
+            </tr>
+        </table>
+        <button type="button" class="button" id="reset_button" title="Reiniciar contadores">Reiniciar</button>
+        <span class="hora" id="end_time" title="Hora en que termina el break">Fin:</span><span class="hora"
+            style="width:25%;" id="end_time_2"></span>
+
+
+        <!--<div><button type="button"
+                style="background: transparent;	color: #FFFFFF;	position: absolute;	right: 2px;  text-align: center;  font-size: 18px; bottom: 45px;	text-decoration: none; cursor: pointer; border-style: none;"
+                id="button_popup"><a href="/break_config.html"
+                    style="text-decoration: none; color: #FFFFFF;">⚙</a></button>
+        </div>-->
+        <button type="button"
+            style="background: transparent;	color: #FFFFFF; position: absolute;	left: 2px;  text-align: center;  font-size: 18px; bottom: 45px;	text-decoration: none; cursor: pointer; border-style: none;"
+            id="button_invertir" title="Invertir la apertura de las pestañas. Que los menús se abran para abajo."><img
+                class="icon icon2" id="boton_invertir" src="/img/invertir.png"></button>
+        <div><button type="button"
+                style="background: transparent;	color: #FFFFFF;	z-index:5; position: absolute;	right: 2px;  text-align: center;  font-size: 18px; bottom: 45px;	text-decoration: none; cursor: pointer; border-style: none;"
+                id="button_config" title="Abrir/cerrar configuración de notificaciones"><img class="icon icon2"
+                    id="boton_abrir" src="/img/gear.png"></button>
+            <div id="bubbly_config"
+                style="display:none; background: #12408c; z-index:4; position: absolute; width:130px; height:30px; right:2px; bottom:43px;font-size: 12px; text-decoration: none; border-style: none; border-radius: 10px 20px 20px 10px;">
+                <div id="close_bubbly_config"
+                    style="font-family: Rubik; background: #adcbff; color: black;position: absolute; border-radius: 10px; z-index:4; top:10px; width:10px; text-align: center; font-size: 8px; height:10px; text-decoration: none; cursor: pointer; border-style: none;">
+                    X</div>
+                <div
+                    style="font-family: Rubik; color: #99bfff;position: absolute;	left: 13px; z-index:4; width:100px; top:3px; text-align: left; font-size: 10px;  height:30px; text-decoration: none; border-style: none;">
+                    Podés configurar <br>las notificaciones</div>
+                <div
+                    style="font-family: Rubik; color: #99bfff;position: absolute;	right: 25px; z-index:4; text-align: left; font-size: 20px; top:4px;  height:30px; text-decoration: none; border-style: none;">
+                    ></div>
+            </div>
+        </div>
+
+
+        <div style="visibility: hidden; background: #75acff; z-index:4;	color: #FFFFFF;	position: absolute;	right: 0px; width:220px; height:221px;   font-size: 18px; top: 0px;	text-decoration: none; border-style: none;"
+            id="div_config">
+            <h1 class="hora">Notificaciones</h1>
+
+            <input type="checkbox" id="cbox1" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación cuando terminen Break y Pausa"> <label for="cbox1" class="hora"
+                title="Activar/desactivar notificación cuando terminen Break y Pausa">Final del break y
+                pausa</label><br>
+
+            <input type="checkbox" id="cbox2" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación de Próximo estado: Break"> <label for="cbox2" class="hora"
+                title="Activar/desactivar notificación de Próximo estado: Break">Próximo:
+                Break</label><input type="time" style="transform: scale(0.8); color:black;
+            font-family: Rubik; position:absolute; right:10px;" id="hora_prox_break"
+                title="Ingresar hora de Próximo estado: Break"><br>
+
+            <input type="checkbox" id="cbox3" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación de Próximo estado: Post Contact"> <label for="cbox3" class="hora"
+                title="Activar/desactivar notificación de Próximo estado: Post Contact">Próximo:
+                Post</label><input type="time" style="transform: scale(0.8); color:black;
+            font-family: Rubik; position:absolute; right:10px;" id="hora_prox_post"
+                title="Ingresar hora de Próximo estado: Post Contact"><br>
+
+            <input type="checkbox" id="cbox5" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación personalizable 1"> <label for="cbox5" class="hora"
+                title="Activar/desactivar notificación personalizable 1"><input type="text" id="nombre_personalizable_1"
+                    value="Personalizable 1" maxlength="60" style="width:80px; font-family: Rubik; font-size: 10px;"
+                    title="Nombre de la notificación"> <select id="tipo_personalizable_1" name="tipos"
+                    title="Elegir si es una notificación buena o mala" style="font-family: Rubik; font-size: 12px;">
+                    <option value="neutro">:|</option>
+                    <option value="bueno">:)</option>
+                    <option value="malo">:(</option>
+                </select></label><input type="time" style="transform: scale(0.8); color:black;
+font-family: Rubik; position:absolute; right:10px;" id="hora_personalizable_1"
+                title="Ingresar hora de la notificación personalizable 1"><br>
+
+            <input type="checkbox" id="cbox6" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación personalizable 2"> <label for="cbox6" class="hora"
+                title="Activar/desactivar notificación personalizable 2"><input type="text" id="nombre_personalizable_2"
+                    value="Personalizable 2" maxlength="60" style="width:80px; font-family: Rubik; font-size: 10px;"
+                    title="Nombre de la notificación"> <select id="tipo_personalizable_2" name="tipos"
+                    title="Elegir si es una notificación buena o mala" style="font-family: Rubik; font-size: 12px;">
+                    <option value="neutro">:|</option>
+                    <option value="bueno">:)</option>
+                    <option value="malo">:(</option>
+                </select></label><input type="time" style="transform: scale(0.8); color:black;
+font-family: Rubik; position:absolute; right:10px;" id="hora_personalizable_2"
+                title="Ingresar hora de la notificación personalizable 2"><br>
+
+            <input type="checkbox" id="cbox4" value="second_checkbox" style="position:relative; left:5px;"
+                title="Activar/desactivar notificación de Pausa Activa"> <label for="cbox4" class="hora"
+                title="Activar/desactivar notificación de Pausa Activa">Pausa activa </label><br>
+
+            <!--<input type="checkbox" id="cbox4" value="second_checkbox" style="position:relative; left:5px;" title="Activar/desactivar notificación de Pausa Activa"> <label for="cbox4" class="hora" title="Activar/desactivar notificación de Pausa Activa" style="font-size: 10px;">Pausa activa: </label><select id="dia_pausa_activa_selector" name="dia_p_act" title="Día de pausa activa" style="font-family: Rubik; font-size: 10px; width:40px;">
+                <option value="none">Día</option>
+                <option value="1">Lun</option>
+                <option value="2">Mar</option>
+                <option value="3">Mie</option>
+                <option value="4">Jue</option>
+                <option value="5">Vie</option>
+            </select>
+            <input type="time" style="transform: scale(0.7); color:black;
+            font-family: Rubik; width:60px;" id="hora_pausa_activa_selector" title="Ingresar hora de Pausa Activa"><br>-->
+
+            <button type="button" class="button" id="guardar_opciones"
+                style="position: fixed; left: 50%; margin-left: -25px;" title="Guardar configuración">Guardar</button>
+            <div id="msg" class="hora"
+                style="text-align: left; width:185px; position: absolute; bottom:2px; left:2px; font-size: 12px;"></div>
+            <div><button type="button"
+                    style="background: transparent;	color: #FFFFFF; position: absolute;	right: 3px;  text-align: center;  font-size: 8px; top: 3px;	text-decoration: none; cursor: help; border-style: none;"
+                    id="help" title="Relojito v1.14 - by Seba Chiappa">?</button>
+            </div>
+        </div>
+
+        <!--Calendario-->
+        <div style="visibility: hidden; text-align: center; background: #75acff; z-index:4;	color: #FFFFFF;	position: absolute;	right: 0px; width:220px; height:221px;   font-size: 12px; top: 0px;	text-decoration: none; border-style: none;"
+            id="div_calendar">
+            <table class="hora" style="width:100%">
+                <tr>
+                    <td colspan="6" style="font-weight: bold;">Calendario</td>
+                </tr>
+                <tr>
+                    <td style="height:10px;" colspan="6"><input type="date" id="date_calendar" min="2017-01-01"
+                            min="2000-01-02" max="2025-01-02"
+                            style="position: fixed; width:150px; left: 10px; font-family: Rubik; font-size: 12px;"
+                            title="Calendario/fecha desde la que se empieza a contar">
+                        <!--yyyy-mm-dd-->
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"><br>Calcular días:</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Corridos:</td>
+                    <td colspan="2"><input type="number" id="days_calendar" value="0" min="0" max="200" maxlength="3"
+                            style="width:45px; font-family: Rubik; font-size: 10px;" title="Días corridos a contar">
+                        <span id="borrar_corridos" style="cursor:pointer;">×</span></td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Hábiles:</td>
+                    <td colspan="2"><input type="number" id="business_days_calendar" value="0" min="0" max="200"
+                            maxlength="3" style="width:45px; font-family: Rubik; font-size: 10px;"
+                            title="Días hábiles a contar"> <span id="borrar_habiles" style="cursor:pointer;">×</span>
+                    </td>
+                    <td colspan="2"><select id="site_selector" name="site" title="País para calcular días hábiles"
+                            style="font-family: Rubik; font-size: 12px;">
+                            <option value="none">País</option>
+                            <option value="AR">MLA</option>
+                            <option value="MX">MLM</option>
+                            <option value="CO">MCO</option>
+                            <option value="CL">MLC</option>
+                            <option value="EC">MEC</option>
+                            <option value="PE">MPE</option>
+                            <option value="UY">MLU</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><button type="button" class="button" id="calcular_fecha"
+                            title="Calcular días">Calcular</button></td>
+                    <td colspan="3"><button type="button" class="button" id="calendar_reset"
+                            title="Reiniciar todo">Reiniciar</button></td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div id="fecha_calculada" class="hora" title="Fecha de vencimiento del plazo">Vence: </div>
+                    </td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div class="hora" style="color:#e2e2e2">Elegir fecha de inicio. Escribir cantidad de días. En
+                            caso de hábiles, elegir el país. Elegir "Calcular".</div>
+                    </td>
+                </tr>
+            </table>
+            <div id="calendar_today" class="hora"
+                style="position: absolute; right: 8px; top:27px; font-size: 15px; cursor:pointer; height: 20px;"
+                title="Volver a hoy"><img class="icon icon2" style="height: 20px; width: 20px;" src="/img/hoy.png">
+            </div>
+        </div>
+
+        <!--
+        <div style="visibility: hidden; background: #75acff; z-index:4;	color: #FFFFFF;	position: absolute;	right: 0px; width:220px; height:221px;   font-size: 18px; top: 0px;	text-decoration: none; border-style: none;"
+            id="div_calendar">
+            <h1 class="hora">Calendario</h1>
+            <input type="date" id="date_calendar" min="2017-01-01" min="2000-01-02" max="2025-01-02" style="position: fixed; width:150px; left: 10px; font-family: Rubik;" title="Calendario/fecha desde la que se empieza a contar"><br>
+            <p class="hora">Días corridos: <input type="number" id="days_calendar" value="15" min="0" max="200" maxlength="3" style="width:45px; font-family: Rubik;" title="Días corridos a contar"> </p> 
+            <button type="button" class="button" id="calcular_fecha" style="position: absolute; left: 2%; bottom:30px;" title="Calcular días corridos">Calcular</button>
+            <div id="fecha_calculada" class="hora"
+                style="width:220px; text-align: left; position: absolute; left: 75px; bottom:42px;" title="Fecha de vencimiento del plazo">Vence: </div>
+                <div id="calendar_reset" class="hora"
+                style="position: absolute; right: 5px; top:30px; height: 15px; font-size: 15px; cursor:pointer;" title="Volver a hoy"><img class="icon icon2" id="boton_abrir"
+                src="/img/hoy.png"></div>
+        </div>
+    -->
+
+</body>
+
+</html>

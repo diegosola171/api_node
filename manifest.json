@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "Relojito",
+    "version": "1.14",
+    "icons": { "16": "img/icon16.png",
+      "48": "img/icon48.png",
+     "128": "img/icon128.png" },
+    "permissions": [
+      "alwaysOnTopWindows",
+      "notifications",
+      "storage"],
+    "app": {
+      "background": {
+        "scripts": ["background.js"]
+      }
+    },
+    "minimum_chrome_version": "28"
+  }
